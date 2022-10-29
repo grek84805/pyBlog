@@ -8,21 +8,22 @@ from django.core.validators import MinLengthValidator, RegexValidator
 from django.db import models
 from django.shortcuts import get_object_or_404
 from django.template.loader import render_to_string
-from modelcluster.fields import ParentalManyToManyField
+from modelcluster.fields import ParentalManyToManyField, ParentalKey
 from django.utils.text import slugify
 from treebeard.mp_tree import MP_Node
 
 from wagtail.admin.edit_handlers import FieldPanel
 from wagtail.admin.forms import WagtailAdminModelForm
-from wagtail.admin.panels import MultiFieldPanel
+from wagtail.admin.panels import MultiFieldPanel, InlinePanel
 from wagtail.contrib.modeladmin.helpers import ButtonHelper
 from wagtail.contrib.modeladmin.options import ModelAdmin
 from wagtail.contrib.modeladmin.views import CreateView
-from wagtail.fields import RichTextField, StreamField
-from wagtail.models import Page
+from wagtail.fields import StreamField
+from wagtail.models import Page, Orderable
 from wagtail.search import index
 
 from base.blocks import BaseStreamBlock
+from base.models import Person
 
 node_name_validator = RegexValidator(
     regex='^[\w][a-zA-Z &]+$',
@@ -47,7 +48,14 @@ class Node(index.Indexed, MP_Node):
         blank=True,
         help_text="What else is this known as or referred to as?"
     )
-
+    image = models.ForeignKey(
+        "wagtailimages.Image",
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="+",
+        help_text="Landscape mode only; horizontal width between 1000px and 3000px.",
+    )
     # node tree specific fields and attributes
     node_order_index = models.IntegerField(
         blank=True,
@@ -61,6 +69,7 @@ class Node(index.Indexed, MP_Node):
         # FieldPanel('parent'),  # virtual field - see TopicForm
         FieldPanel('name'),
         FieldPanel('slug'),
+        FieldPanel("image"),
         FieldPanel('aliases', widget=forms.Textarea(attrs={'rows': '5'})),
     ]
 
@@ -283,6 +292,23 @@ class NodeAdmin(ModelAdmin):
         return urls + (add_child_url,)
 
 
+class BlogPersonRelationship(Orderable, models.Model):
+    """
+    This defines the relationship between the `Person` within the `base`
+    app and the BlogPage below. This allows people to be added to a BlogPage.
+    We have created a two way relationship between BlogPage and Person using
+    the ParentalKey and ForeignKey
+    """
+
+    page = ParentalKey(
+        "Article", related_name="blog_person_relationship", on_delete=models.CASCADE
+    )
+    person = models.ForeignKey(
+        "base.Person", related_name="person_blog_relationship", on_delete=models.CASCADE
+    )
+    panels = [FieldPanel("person")]
+
+
 class Article(Page):
     date = models.DateField("Post date")
     body = StreamField(
@@ -309,7 +335,17 @@ class Article(Page):
             FieldPanel('date'),
             FieldPanel('categories', widget=forms.CheckboxSelectMultiple),
         ], heading="Blog information"),
+        InlinePanel(
+            "blog_person_relationship", label="Author(s)", panels=None, min_num=1
+        ),
     ]
 
-
-
+    def authors(self):
+        """
+        Returns the BlogPage's related people. Again note that we are using
+        the ParentalKey's related_name from the BlogPersonRelationship model
+        to access these objects. This allows us to access the Person objects
+        with a loop on the template. If we tried to access the blog_person_
+        relationship directly we'd print `blog.BlogPersonRelationship.None`
+        """
+        return Person.objects.filter(live=True, person_blog_relationship__page=self)
