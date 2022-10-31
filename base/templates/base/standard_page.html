@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% load wagtailcore_tags wagtailimages_tags static wagtailmetadata_tags %}
+
+{% block meta_tag %}
+    {% meta_tags %}
+{% endblock %}
+{% block content %}
+
+
+    <div class="container bread-detail">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="col-md-7">
+                    <div class="row">
+                        {% if page.introduction %}
+                            <p class="bread-detail__introduction">
+                                {{ page.introduction }}
+                            </p>
+                        {% endif %}
+                        {{ page.body }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

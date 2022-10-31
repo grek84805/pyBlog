@@ -17,7 +17,7 @@ class PersonModelAdmin(ModelAdmin):
 
 
 class PyBlogModelAdminGroup(ModelAdminGroup):
-    menu_label = "Bakery Misc"
+    menu_label = "PyBlog Misc"
     menu_icon = "pilcrow"  # change as required
     menu_order = 300  # will put in 4th place (000 being 1st, 100 2nd)
     items = (PersonModelAdmin,)
