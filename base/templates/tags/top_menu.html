@@ -1,0 +1,20 @@
+{% load navigation_tags wagtailcore_tags %}
+{% get_site_root as site_root %}
+
+{% for menuitem in menuitems %}
+    <li class="nav-item
+            {{ menuitem.title|lower|cut:" " }}
+{% if menuitem.show_dropdown %} has-submenu{% endif %}">
+        {% if menuitem.show_dropdown %}
+            <a href="{% pageurl menuitem %}"
+               class="allow-toggle {% if menuitem.active %} active{% endif %}">
+                {{ menuitem.title }}
+                <i class='bx bx-chevron-down'></i>
+            </a>
+            {% top_menu_children parent=menuitem %}
+            {# Used to display child menu items #}
+        {% else %}
+            <a class="allow-toggle {% if menuitem.active %} active{% endif %}" href="{% pageurl menuitem %}">{{ menuitem.title }}</a>
+        {% endif %}
+    </li>
+{% endfor %}

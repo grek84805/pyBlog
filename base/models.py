@@ -31,6 +31,7 @@ from wagtail.contrib.settings.models import (
     register_setting,
 )
 
+
 class StandardPage(MetadataPageMixin, Page):
     """
     A generic content page. On this demo site we use it for an about page but
@@ -342,9 +343,13 @@ class PyBlogSiteSpecificSettings(BaseGenericSetting):
         related_name="+",
         help_text="Logo Images",
     )
+    header_text = models.CharField(max_length=255, blank=True, null=True)
+    youtube = models.URLField(default='url')
     panels = [
         FieldPanel('site_name'),
         FieldPanel('site_image'),
+        FieldPanel('header_text'),
+        FieldPanel('youtube'),
     ]
 
     class Meta:
