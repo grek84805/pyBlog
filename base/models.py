@@ -8,6 +8,7 @@ from wagtail.admin.panels import (
     MultiFieldPanel,
     PublishingPanel,
 )
+
 from wagtail.fields import StreamField, RichTextField
 
 from wagtail.models import (
@@ -24,6 +25,11 @@ from wagtail.models import Page
 
 from base.blocks import BaseStreamBlock
 
+from wagtail.contrib.settings.models import (
+    BaseGenericSetting,
+    BaseSiteSetting,
+    register_setting,
+)
 
 class StandardPage(MetadataPageMixin, Page):
     """
@@ -323,3 +329,23 @@ class Person(
     class Meta:
         verbose_name = "Person"
         verbose_name_plural = "People"
+
+
+@register_setting(icon='placeholder')
+class PyBlogSiteSpecificSettings(BaseGenericSetting):
+    site_name = models.CharField("First name", max_length=254, blank=True, null=True)
+    site_image = models.ForeignKey(
+        "wagtailimages.Image",
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="+",
+        help_text="Logo Images",
+    )
+    panels = [
+        FieldPanel('site_name'),
+        FieldPanel('site_image'),
+    ]
+
+    class Meta:
+        verbose_name = "Site Settings"
