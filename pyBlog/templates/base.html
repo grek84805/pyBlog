@@ -1,4 +1,4 @@
-{% load static wagtailcore_tags wagtailuserbar %}
+{% load static compress wagtailcore_tags wagtailuserbar %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -27,9 +27,21 @@
         <base target="_blank">
     {% endif %}
 
-    {# Global stylesheets #}
-    <link rel="stylesheet" type="text/css" href="{% static 'css/pyBlog.css' %}">
+    <link rel="shortcut icon" type="image/x-icon" href="{% static 'images/favicon.png' %}">
 
+    <!-- CSS
+    ============================================ -->
+    {% compress css %}
+        <!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="{% static 'css/vendor/bootstrap.min.css' %}">
+        <link rel="stylesheet" href="{% static 'css/vendor/font-awesome.css' %}">
+        <link rel="stylesheet" href="{% static 'css/vendor/slick.css' %}">
+        <link rel="stylesheet" href="{% static 'css/vendor/slick-theme.css' %}">
+        <link rel="stylesheet" href="{% static 'css/vendor/base.css' %}">
+        <link rel="stylesheet" href="{% static 'css/plugins/plugins.css' %}">
+        {# Global stylesheets #}
+        <link rel="stylesheet" type="text/css" href="{% static 'css/style.min.css' %}">
+    {% endcompress %}
     {% block extra_css %}
         {# Override this in templates to add extra stylesheets #}
     {% endblock %}
@@ -38,10 +50,43 @@
 <body class="{% block body_class %}{% endblock %}">
 {% wagtailuserbar %}
 
-{% block content %}{% endblock %}
+<div class="main-wrapper">
+
+    {% include 'includes/header.html' %}
+
+    <!-- Start Back To Top  -->
+    <a id="backto-top"></a>
+    <!-- End Back To Top  -->
+
+</div>
+
+{% block content %}
+
+{% endblock %}
+
+{% include 'includes/footer.html' %}
+<!-- Start Back To Top  -->
+<a id="backto-top"></a>
+<!-- End Back To Top  -->
 
 {# Global javascript #}
-<script type="text/javascript" src="{% static 'js/pyBlog.js' %}"></script>
+<!-- Modernizer JS -->
+{% compress js inline %}
+    <script src="{% static 'js/vendor/modernizr.min.js' %}"></script>
+    <!-- jQuery JS -->
+    <script src="{% static 'js/vendor/jquery.js' %}"></script>
+    <!-- Bootstrap JS -->
+    <script src="{% static 'js/vendor/bootstrap.min.js' %}"></script>
+    <script src="{% static 'js/vendor/slick.min.js' %}"></script>
+    <script src="{% static 'js/vendor/tweenmax.min.js' %}"></script>
+    <script src="{% static 'js/vendor/js.cookie.js' %}"></script>
+    <script src="{% static 'js/vendor/jquery.style.switcher.js' %}"></script>
+    <script src="{% static 'js/main.js' %}"></script>
+{% endcompress %}
+
+<!-- Main JS -->
+
+
 
 {% block extra_js %}
     {# Override this in templates to add extra javascript #}

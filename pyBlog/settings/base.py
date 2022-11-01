@@ -48,6 +48,8 @@ INSTALLED_APPS = [
     "django.contrib.sitemaps",
     "wagtailcodeblock",
     "wagtailmetadata",
+    "djangobower",
+    "compressor",
 ]
 
 MIDDLEWARE = [
@@ -163,4 +165,30 @@ WAGTAIL_CODE_BLOCK_LANGUAGES = (
     ('python', 'Python'),
     ('scss', 'SCSS'),
     ('yaml', 'YAML'),
+)
+
+BOWER_COMPONENTS_ROOT = os.path.join(BASE_DIR, 'components')
+
+STATICFILES_FINDERS = (
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+
+    'djangobower.finders.BowerFinder',  # add this
+    'compressor.finders.CompressorFinder',  # add this
+)
+
+COMPRESS_ENABLED = True
+COMPRESS_URL = STATIC_URL
+
+COMPRESS_PRECOMPILERS = (
+    ('text/x-scss', 'sample_app.compressor_filters.PatchedSCSSCompiler'),
+)
+
+COMPRESS_CSS_FILTERS = (
+    'sample_app.compressor_filters.CustomCssAbsoluteFilter',
+)
+
+# 6. Add some Bower package.
+BOWER_INSTALLED_APPS = (
+    'bootstrap-sass-official#3.3.1',
 )

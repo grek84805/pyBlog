@@ -92,6 +92,10 @@ class BlogIndexPage(RoutablePageMixin, MetadataPageMixin, Page):
             posts = posts.filter(tags=tag)
         return posts
 
+    class Meta:
+        verbose_name = "Category Page"
+        verbose_name_plural = "Categories Pages"
+
 
 class Article(MetadataPageMixin, Page):
     date = models.DateField("Post date")
@@ -138,3 +142,7 @@ class Article(MetadataPageMixin, Page):
     # Specifies what content types can exist as children of BlogPage.
     # Empty list means that no child content types are allowed.
     subpage_types = []
+
+    class Meta:
+        verbose_name = "Post"
+        verbose_name_plural = "Posts"
