@@ -1,0 +1,17 @@
+{% load wagtailcore_tags i18n %}
+
+{% if ancestors %}
+
+    {% for ancestor in ancestors %}
+        {% if forloop.last %}
+            <li>{{ ancestor }}</li>
+        {% else %}
+            <li><a href="{% pageurl ancestor %}">{% if forloop.first %}{% trans 'Home' %}
+            {% else %}
+                {{ ancestor }}
+            {% endif %}</a>
+            </li>
+        {% endif %}
+    {% endfor %}
+
+{% endif %}

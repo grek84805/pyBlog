@@ -1,0 +1,25 @@
+{% load wagtailimages_tags wagtailcore_tags i18n %}
+
+<div class="col-sm-6 col-lg-3">
+    <div class="products-item">
+        <div class="top">
+            <a href="{{ page.url }}">
+                {% if page.image %}
+                    <figure class="listing-card__image">
+                        {% image page.image fill-300x250-c100 loading="lazy" %}
+                    </figure>
+                {% endif %}
+            </a>
+            <div class="inner">
+                <h3>
+                    <a href="{{ page.url }}">{{ page.title }}</a>
+                </h3>
+                <span>{{ page.introduction|truncatechars:'100' }}</span>
+            </div>
+        </div>
+        <div class="bottom">
+            <a class="cart-text" href="{{ page.url }}">{% trans 'Read More' %}</a>
+            <i class='bx bx-plus'></i>
+        </div>
+    </div>
+</div>

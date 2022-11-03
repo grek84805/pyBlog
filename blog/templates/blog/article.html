@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% load wagtailcore_tags wagtailimages_tags static wagtailmetadata_tags %}
+{% load wagtailcore_tags navigation_tags wagtailimages_tags static wagtailmetadata_tags %}
 
 {% block meta_tag %}
     {% meta_tags %}
@@ -8,6 +8,11 @@
 
 
 {% block content %}
+
+
+
+     {% include 'includes/breadcrump/breadcrum-item.html' %}
+
 
     {% image self.image fill-1920x600 as hero_img %}
 

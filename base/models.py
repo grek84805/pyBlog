@@ -343,11 +343,20 @@ class PyBlogSiteSpecificSettings(BaseGenericSetting):
         related_name="+",
         help_text="Logo Images",
     )
+    bread_image = models.ForeignKey(
+        "wagtailimages.Image",
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="+",
+        help_text="Bread Image",
+    )
     header_text = models.CharField(max_length=255, blank=True, null=True)
     youtube = models.URLField(default='url')
     panels = [
         FieldPanel('site_name'),
         FieldPanel('site_image'),
+        FieldPanel('bread_image'),
         FieldPanel('header_text'),
         FieldPanel('youtube'),
     ]

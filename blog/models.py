@@ -37,6 +37,67 @@ class BlogPersonRelationship(Orderable, models.Model):
     panels = [FieldPanel("person")]
 
 
+class CoursesIndexPage(RoutablePageMixin, MetadataPageMixin, Page):
+    """
+    Index page for blogs.
+    We need to alter the page model's context to return the child page objects,
+    the BlogPage objects, so that it works as an index page
+
+    RoutablePageMixin is used to allow for a custom sub-URL for the tag views
+    defined above.
+    """
+
+    introduction = models.TextField(help_text="Text to describe the page", blank=True)
+    image = models.ForeignKey(
+        "wagtailimages.Image",
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="+",
+        help_text="Landscape mode only; horizontal width between 1000px and 3000px.",
+    )
+    date = models.DateField("Post date", null=True, blank=True)
+    content_panels = Page.content_panels + [
+        FieldPanel("introduction", classname="full"),
+        MultiFieldPanel([
+            FieldPanel('date'),
+        ], heading="Blog information"),
+        FieldPanel("image"),
+    ]
+
+    search_fields = Page.search_fields + [
+        index.SearchField('title'),
+        index.SearchField('introduction'),
+    ]
+
+    # Speficies that only BlogPage objects can live under this index page
+    # subpage_types = ["Article"]
+
+    # Defines a method to access the children of the page (e.g. BlogPage
+    # objects). On the demo site we use this on the HomePage
+    def children(self):
+        return self.get_children().specific().live()
+
+    # Overrides the context to list all child items, that are live, by the
+    # date that they were published
+    # https://docs.wagtail.org/en/stable/getting_started/tutorial.html#overriding-context
+    def get_context(self, request):
+        context = super(CoursesIndexPage, self).get_context(request)
+        context["posts"] = (
+            Article.objects.descendant_of(self).live().order_by("-date")
+        )
+        return context
+
+    def serve_preview(self, request, mode_name):
+        # Needed for previews to work
+        return self.serve(request)
+
+
+    class Meta:
+        verbose_name = "Course Page"
+        verbose_name_plural = "Courses Pages"
+
+
 class BlogIndexPage(RoutablePageMixin, MetadataPageMixin, Page):
     """
     Index page for blogs.
@@ -56,14 +117,22 @@ class BlogIndexPage(RoutablePageMixin, MetadataPageMixin, Page):
         related_name="+",
         help_text="Landscape mode only; horizontal width between 1000px and 3000px.",
     )
-
+    date = models.DateField("Post date", null=True, blank=True)
     content_panels = Page.content_panels + [
         FieldPanel("introduction", classname="full"),
+        MultiFieldPanel([
+            FieldPanel('date'),
+        ], heading="Blog information"),
         FieldPanel("image"),
     ]
 
+    search_fields = Page.search_fields + [
+        index.SearchField('title'),
+        index.SearchField('introduction'),
+    ]
+
     # Speficies that only BlogPage objects can live under this index page
-    #subpage_types = ["Article"]
+    # subpage_types = ["Article"]
 
     # Defines a method to access the children of the page (e.g. BlogPage
     # objects). On the demo site we use this on the HomePage
@@ -93,12 +162,13 @@ class BlogIndexPage(RoutablePageMixin, MetadataPageMixin, Page):
         return posts
 
     class Meta:
-        verbose_name = "Category Page"
-        verbose_name_plural = "Categories Pages"
+        verbose_name = "Category Blog Page"
+        verbose_name_plural = "Categories Blog Pages"
 
 
 class Article(MetadataPageMixin, Page):
     date = models.DateField("Post date")
+    introduction = models.TextField(help_text="Text to describe the page", blank=True)
     body = StreamField(
         BaseStreamBlock(), verbose_name="Page body", blank=True, use_json_field=True
     )
@@ -117,6 +187,7 @@ class Article(MetadataPageMixin, Page):
     )
 
     content_panels = Page.content_panels + [
+        FieldPanel('introduction'),
         FieldPanel('body'),
         FieldPanel("image"),
         MultiFieldPanel([
@@ -137,7 +208,7 @@ class Article(MetadataPageMixin, Page):
         """
         return Person.objects.filter(live=True, person_blog_relationship__page=self)
 
-    parent_page_types = ["BlogIndexPage"]
+    parent_page_types = ["BlogIndexPage", "CoursesIndexPage"]
 
     # Specifies what content types can exist as children of BlogPage.
     # Empty list means that no child content types are allowed.
