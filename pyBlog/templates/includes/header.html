@@ -1,0 +1,125 @@
+{% load navigation_tags wagtailsettings_tags i18n wagtailimages_tags %}
+{% get_settings as wagtail_settings %}
+<!-- Header -->
+<div class="header-area">
+    <div class="container-fluid">
+        <div class="row align-items-center">
+
+            <div class="col-sm-6 col-lg-7">
+                <div class="left">
+
+                </div>
+            </div>
+
+            <div class="col-sm-6 col-lg-5">
+                <div class="right">
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+<!-- End Header -->
+
+<!-- Nav Top -->
+<div class="nav-top-area">
+    <div class="container-fluid">
+        <div class="row align-items-center">
+
+            <div class="col-lg-2">
+                <div class="left">
+                    <a href="/">
+                        {% if wagtail_settings.base.PyBlogSiteSpecificSettings.site_name %}
+                            <h4>{{ wagtail_settings.base.PyBlogSiteSpecificSettings.site_name }}</h4>
+                        {% else %}
+                            {% image wagtail_settings.base.PyBlogSiteSpecificSettings.site_image max-150x51 as logo_image %}
+                            <img src="{{ logo_image.url }}" alt="Logo">
+                        {% endif %}
+                    </a>
+                </div>
+            </div>
+
+            <div class="col-lg-5">
+                <div class="middle">
+                    <form method="get" action="{% url 'search' %}">
+                        <div class="form-group">
+                            <div class="inner">
+
+                            </div>
+                            <label style="display: block !important;">
+                                <input type="text" name="query"{% if search_query %}
+                                       value="{{ search_query }}"{% endif %} class="form-control"
+                                       placeholder="{% trans 'Search Your Keywords' %}">
+                            </label>
+                            <button type="submit" class="btn">
+                                <i class='bx bx-search'></i>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div class="col-lg-5">
+                <div class="right">
+                    <div class="social-links">
+                        <ul>
+                            <li>
+                                {% if wagtail_settings.base.PyBlogSiteSpecificSettings.youtube %}
+                                    <a href="{{ wagtail_settings.base.PyBlogSiteSpecificSettings.youtube }}"
+                                       target="_blank">
+                                        <i class='bx bxl-youtube'></i>
+                                    </a>
+                                {% endif %}
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+<!-- End Nav Top -->
+
+<!-- Navbar -->
+<div class="navbar-area sticky-top">
+    <!-- Menu For Mobile Device -->
+    <div class="mobile-nav">
+        <a href="/" class="logo">
+            {% if wagtail_settings.base.PyBlogSiteSpecificSettings.site_name %}
+                <h4>{{ wagtail_settings.base.PyBlogSiteSpecificSettings.site_name }}</h4>
+            {% else %}
+                {% image wagtail_settings.base.PyBlogSiteSpecificSettings.site_image max-150x51 as logo_image %}
+                <img src="{{ logo_image.url }}" alt="Logo">
+            {% endif %}
+        </a>
+    </div>
+
+    <!-- Menu For Desktop Device -->
+    <div class="main-nav">
+        <div class="container-fluid">
+            <nav class="navbar navbar-expand-md navbar-light">
+
+                <div class="left">
+
+                </div>
+
+                <div class="collapse navbar-collapse mean-menu" id="navbarSupportedContent">
+                    <ul class="navbar-nav">
+                        {% get_site_root as site_root %}
+                        {% top_menu parent=site_root calling_page=self %}
+                    </ul>
+
+                    <div class="side-nav">
+                        {% if wagtail_settings.base.PyBlogSiteSpecificSettings.header_text %}
+                            <h4><a href="#">{{ wagtail_settings.base.PyBlogSiteSpecificSettings.header_text }}</a></h4>
+                        {% endif %}
+                    </div>
+
+                </div>
+            </nav>
+        </div>
+    </div>
+</div>
+<!-- End Navbar -->

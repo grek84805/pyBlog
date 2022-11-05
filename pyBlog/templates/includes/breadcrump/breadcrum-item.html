@@ -1,0 +1,35 @@
+{% load navigation_tags wagtailsettings_tags wagtailimages_tags i18n static %}
+{% get_settings as wagtail_settings %}
+<!-- Page Title -->
+<div class="page-title-area">
+    <div class="d-table">
+        <div class="d-table-cell">
+            <div class="container">
+                <div class="title-content">
+                    {% if page.title %}
+                        <h2>{{ page.title }}</h2>
+                    {% elif '/search/' in request.path %}
+                        <h2>{% trans 'Search' %}</h2>
+                    {% else %}
+                        <h2>404</h2>
+                    {% endif %}
+                    <ul>
+                        {% breadcrumbs %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="title-img">
+        {% if wagtail_settings.base.PyBlogSiteSpecificSettings.bread_image %}
+            <figure class="listing-card__image">
+                {% image wagtail_settings.base.PyBlogSiteSpecificSettings.bread_image fill-645x605-c100 loading="lazy" %}
+            </figure>
+        {% endif %}
+
+        <img src="{% static 'assets/images/shape16.png' %}" alt="Shape">
+        <img src="{% static 'assets/images/shape17.png' %}" alt="Shape">
+        <img src="{% static 'assets/images/shape18.png' %}" alt="Shape">
+    </div>
+</div>
+<!-- End Page Title -->

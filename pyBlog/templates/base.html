@@ -1,0 +1,154 @@
+{% load static compress wagtailsettings_tags wagtailcore_tags wagtailuserbar %}
+{% get_settings as wagtail_settings %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    {% block meta_tag %}
+        <title>
+            {% block title %}
+                {% if self.seo_title %}{{ self.seo_title }}{% else %}{{ self.title }}{% endif %}
+            {% endblock %}
+            {% block title_suffix %}
+                {% with self.get_site.site_name as site_name %}
+                    {% if site_name %}- {{ site_name }}{% endif %}
+                {% endwith %}
+            {% endblock %}
+        </title>
+        <meta name="description" content="{{ page.search_description }}"/>
+    {% endblock %}
+    {% if page.canonical_url %}
+        <link rel="canonical" href="{{ page.canonical_url }}"/>
+    {% endif %}
+
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+    {# Force all links in the live preview panel to be opened in a new tab #}
+    {% if request.in_preview_panel %}
+        <base target="_blank">
+    {% endif %}
+
+    <link rel="shortcut icon" type="image/x-icon" href="{% static 'assets/images/favicon.png' %}">
+
+    <!-- CSS
+    ============================================ -->
+    {% compress css %}
+
+        <!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="{% static 'assets/css/bootstrap.min.css' %}">
+        <!-- Flat Icon CSS -->
+        <link rel="stylesheet" href="{% static 'assets/fonts/flaticon.css' %}">
+        <!-- Nice Select CSS -->
+        <link rel="stylesheet" href="{% static 'assets/css/nice-select.min.css' %}">
+        <!-- Box Icon CSS -->
+        <link rel="stylesheet" href="{% static 'assets/css/boxicons.min.css' %}">
+        <!-- Mean Menu CSS -->
+        <link rel="stylesheet" href="{% static 'assets/css/meanmenu.css' %}">
+        <!-- Revolution CSS -->
+        <link rel="stylesheet" type="text/css" href="{% static 'assets/css/settings.css' %}">
+        <link rel="stylesheet" type="text/css" href="{% static 'assets/css/layers.css' %}">
+        <link rel="stylesheet" type="text/css" href="{% static 'assets/css/navigation.css' %}">
+        <!-- Owl Carousel CSS -->
+        <link rel="stylesheet" href="{% static 'assets/css/owl.carousel.min.css' %}">
+        <link rel="stylesheet" href="{% static 'assets/css/owl.theme.default.min.css' %}">
+        <!-- Modal Video CSS -->
+        <link rel="stylesheet" href="{% static 'assets/css/modal-video.min.css' %}">
+        <!-- Style CSS -->
+        <link rel="stylesheet" href="{% static 'assets/css/style.css' %}">
+        <!-- Responsive CSS -->
+        <link rel="stylesheet" href="{% static 'assets/css/responsive.css' %}">
+
+        <link rel="stylesheet" href="{% static 'assets/css/main.css' %}">
+    {% endcompress %}
+    {% block extra_css %}
+        {# Override this in templates to add extra stylesheets #}
+    {% endblock %}
+    {% if wagtail_settings.base.PyBlogSiteSpecificSettings.google_code %}
+        {{ wagtail_settings.base.PyBlogSiteSpecificSettings.google_code|safe }}
+    {% endif %}
+</head>
+
+<body class="{% block body_class %}{% endblock %}">
+{% wagtailuserbar %}
+
+<!-- Preloader -->
+<div class="loader">
+    <div class="d-table">
+        <div class="d-table-cell">
+            <div class="pre-load">
+                <div class="inner one"></div>
+                <div class="inner two"></div>
+                <div class="inner three"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Preloader -->
+
+{% include 'includes/header.html' %}
+
+
+
+
+{% block content %}
+
+{% endblock %}
+
+{% include 'includes/footer.html' %}
+<!-- Go Top -->
+<div class="go-top">
+    <i class='bx bxs-up-arrow-circle'></i>
+    <i class='bx bxs-up-arrow-circle'></i>
+</div>
+<!-- End Go Top -->
+
+{# Global javascript #}
+<!-- Modernizer JS -->
+{% compress js inline %}
+    <!-- Essential JS -->
+    <script src="{% static 'assets/js/jquery.min.js' %}"></script>
+    <script src="{% static 'assets/js/popper.min.js' %}"></script>
+    <script src="{% static 'assets/js/bootstrap.min.js' %}"></script>
+    <!-- Form Validator JS -->
+    <script src="{% static 'assets/js/form-validator.min.js' %}"></script>
+    <!-- Contact JS -->
+    <script src="{% static 'assets/js/contact-form-script.js' %}"></script>
+    <!-- Ajax Chip JS -->
+    <script src="{% static 'assets/js/jquery.ajaxchimp.min.js' %}"></script>
+    <!-- Nice Select JS -->
+    <script src="{% static 'assets/js/jquery.nice-select.min.js' %}"></script>
+    <!-- Mean Menu JS -->
+    <script src="{% static 'assets/js/jquery.meanmenu.js' %}"></script>
+    <!-- Revolution JS -->
+    <script src="{% static 'assets/js/jquery.themepunch.tools.min.js' %}"></script>
+    <script src="{% static 'assets/js/jquery.themepunch.revolution.min.js' %}"></script>
+    <!-- The following part can be removed on Server for On Demand Loading) -->
+    <script src="{% static 'assets/js/extensions/revolution.extension.actions.min.js' %}"></script>
+    <script src="{% static 'assets/js/extensions/revolution.extension.carousel.min.js' %}"></script>
+    <script src="{% static 'assets/js/extensions/revolution.extension.kenburn.min.js' %}"></script>
+    <script src="{% static 'assets/js/extensions/revolution.extension.layeranimation.min.js' %}"></script>
+    <script src="{% static 'assets/js/extensions/revolution.extension.migration.min.js' %}"></script>
+    <script src="{% static 'assets/js/extensions/revolution.extension.navigation.min.js' %}"></script>
+    <script src="{% static 'assets/js/extensions/revolution.extension.parallax.min.js' %}"></script>
+    <script src="{% static 'assets/js/extensions/revolution.extension.slideanims.min.js' %}"></script>
+    <script src="{% static 'assets/js/extensions/revolution.extension.video.min.js' %}"></script>
+    <!-- Mixitup JS -->
+    <script src="{% static 'assets/js/jquery.mixitup.min.js' %}"></script>
+    <!-- Owl Carousel JS -->
+    <script src="{% static 'assets/js/owl.carousel.min.js' %}"></script>
+    <!-- Modal Video JS -->
+    <script src="{% static 'assets/js/jquery-modal-video.min.js' %}"></script>
+    <!-- Thumb Slider JS -->
+    <script src="{% static 'assets/js/thumb-slide.js' %}"></script>
+    <!-- Custom JS -->
+    <script src="{% static 'assets/js/custom.js' %}"></script>
+
+    <!-- Main JS -->
+{% endcompress %}
+
+
+{% block extra_js %}
+    {# Override this in templates to add extra javascript #}
+{% endblock %}
+</body>
+</html>

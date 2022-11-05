@@ -1,0 +1,26 @@
+ {% load wagtailimages_tags wagtailcore_tags i18n %}
+<div class="col-sm-6 col-lg-4">
+
+    <div class="blog-item">
+        <div class="top">
+            <a href="{{ page.url }}">
+                {% if page.image %}
+                    <figure class="listing-card__image">
+                        {% image page.image fill-510x400-c100 loading="lazy" %}
+                    </figure>
+                {% endif %}
+            </a>
+            <span>{{ page.date|date:'d M' }}</span>
+        </div>
+        <div class="bottom">
+            <h3>
+                <a href="{{ page.url }}">{{ page.title }}</a>
+            </h3>
+            <p>{{ page.introduction|truncatechars:'100' }}</p>
+            <a class="blog-btn" href="{{ page.url }}">
+                {% trans 'Read More' %}
+                <i class='bx bx-plus'></i>
+            </a>
+        </div>
+    </div>
+</div>

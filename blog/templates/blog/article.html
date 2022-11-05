@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% load  wagtailcore_tags navigation_tags wagtailimages_tags static wagtailmetadata_tags wagtailsettings_tags %}
+{% get_settings as wagtail_settings %}
+{% block meta_tag %}
+    {% meta_tags %}
+{% endblock %}
+
+
+
+{% block content %}
+    {% include 'includes/breadcrump/breadcrum-item.html' %}
+    <!-- Blog Details -->
+    <div class="blog-details-area ptb-100">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="details-item">
+
+                        <div class="details-img">
+                            {% image page.image fill-950x605-c100 loading="lazy" %}
+
+                            <ul class="details-date">
+                                <li>
+                                    <i class='bx bxs-calendar'></i>
+                                    <span>{{ page.date|date:'d M Y' }}</span>
+                                </li>
+                                <li>
+                                    <i class='bx bx-user'></i>
+                                    {% if page.authors %}
+                                        {% for author in page.authors %}
+                                            {{ author.first_name }} {{ author.last_name }}
+                                        {% endfor %}
+                                    {% endif %}
+                                </li>
+                            </ul>
+                            <h1>{{ page.title }}</h1>
+                            {{ page.body }}
+                        </div>
+                        {% if wagtail_settings.base.PyBlogSiteSpecificSettings.comments_code %}
+                            <div class="details-comments">
+                                {{ wagtail_settings.base.PyBlogSiteSpecificSettings.comments_code|safe }}
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End Blog Details -->
+{% endblock content %}

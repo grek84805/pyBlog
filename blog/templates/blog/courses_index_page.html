@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+
+{% load wagtailcore_tags navigation_tags wagtailimages_tags static wagtailmetadata_tags %}
+
+{% block meta_tag %}
+    {% meta_tags %}
+{% endblock %}
+
+
+{% block content %}
+
+    {% include 'includes/breadcrump/breadcrum-item.html' %}
+
+    <!-- Blog -->
+    <section class="blog-area ptb-100">
+        <div class="container">
+            <div class="row justify-content-center">
+
+                {% for post in posts %}
+                    {% with page=post.specific %}
+                        {% include 'includes/card/card_item_2.html' %}
+                    {% endwith %}
+                {% endfor %}
+
+            </div>
+
+            <div class="text-center">
+                {% include 'includes/pagination/pagination.html' %}
+            </div>
+
+        </div>
+    </section>
+    <!-- End Blog -->
+{% endblock content %}
