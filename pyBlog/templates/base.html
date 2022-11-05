@@ -1,4 +1,5 @@
-{% load static compress wagtailcore_tags wagtailuserbar %}
+{% load static compress wagtailsettings_tags wagtailcore_tags wagtailuserbar %}
+{% get_settings as wagtail_settings %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -32,6 +33,7 @@
     <!-- CSS
     ============================================ -->
     {% compress css %}
+
         <!-- Bootstrap CSS -->
         <link rel="stylesheet" href="{% static 'assets/css/bootstrap.min.css' %}">
         <!-- Flat Icon CSS -->
@@ -55,10 +57,15 @@
         <link rel="stylesheet" href="{% static 'assets/css/style.css' %}">
         <!-- Responsive CSS -->
         <link rel="stylesheet" href="{% static 'assets/css/responsive.css' %}">
+
+        <link rel="stylesheet" href="{% static 'assets/css/main.css' %}">
     {% endcompress %}
     {% block extra_css %}
         {# Override this in templates to add extra stylesheets #}
     {% endblock %}
+    {% if wagtail_settings.base.PyBlogSiteSpecificSettings.google_code %}
+        {{ wagtail_settings.base.PyBlogSiteSpecificSettings.google_code|safe }}
+    {% endif %}
 </head>
 
 <body class="{% block body_class %}{% endblock %}">
@@ -135,10 +142,9 @@
     <script src="{% static 'assets/js/thumb-slide.js' %}"></script>
     <!-- Custom JS -->
     <script src="{% static 'assets/js/custom.js' %}"></script>
+
+    <!-- Main JS -->
 {% endcompress %}
-
-<!-- Main JS -->
-
 
 
 {% block extra_js %}

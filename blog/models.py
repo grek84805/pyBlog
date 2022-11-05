@@ -1,10 +1,10 @@
 """Node model and Node admin interaction."""
-
-from django import forms
+from django.conf import settings
+from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 
 from django.db import models
 
-from modelcluster.fields import ParentalManyToManyField, ParentalKey
+from modelcluster.fields import ParentalKey
 
 from wagtailmetadata.models import MetadataPageMixin
 from wagtail.admin.edit_handlers import FieldPanel
@@ -61,7 +61,7 @@ class CoursesIndexPage(RoutablePageMixin, MetadataPageMixin, Page):
         FieldPanel("introduction", classname="full"),
         MultiFieldPanel([
             FieldPanel('date'),
-        ], heading="Blog information"),
+        ], heading="Courses information"),
         FieldPanel("image"),
     ]
 
@@ -83,15 +83,17 @@ class CoursesIndexPage(RoutablePageMixin, MetadataPageMixin, Page):
     # https://docs.wagtail.org/en/stable/getting_started/tutorial.html#overriding-context
     def get_context(self, request):
         context = super(CoursesIndexPage, self).get_context(request)
+        paginator = Paginator(Article.objects.descendant_of(self).live().order_by("-date"), settings.PAGINATION_PAGE)
+        page = request.GET.get("page", 1)
+        page_obj = paginator.get_page(page)
         context["posts"] = (
-            Article.objects.descendant_of(self).live().order_by("-date")
+            page_obj
         )
         return context
 
     def serve_preview(self, request, mode_name):
         # Needed for previews to work
         return self.serve(request)
-
 
     class Meta:
         verbose_name = "Course Page"
@@ -144,8 +146,11 @@ class BlogIndexPage(RoutablePageMixin, MetadataPageMixin, Page):
     # https://docs.wagtail.org/en/stable/getting_started/tutorial.html#overriding-context
     def get_context(self, request):
         context = super(BlogIndexPage, self).get_context(request)
+        paginator = Paginator(Article.objects.descendant_of(self).live().order_by("-date"), settings.PAGINATION_PAGE)
+        page = request.GET.get("page", 1)
+        page_obj = paginator.get_page(page)
         context["posts"] = (
-            Article.objects.descendant_of(self).live().order_by("-date")
+            page_obj
         )
         return context
 

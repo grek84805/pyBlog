@@ -13,3 +13,11 @@ class RobotsView(TemplateView):
         request = context['view'].request
         context['wagtail_site'] = Site.find_for_request(request)
         return context
+
+
+def page_not_found(request, exception):
+    return render(request, "404.html", {})
+
+
+def error_view(request, exception=None):
+    return render(request, "500.html", {})

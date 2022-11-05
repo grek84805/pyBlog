@@ -1,4 +1,4 @@
-{% load navigation_tags wagtailsettings_tags wagtailimages_tags %}
+{% load navigation_tags wagtailsettings_tags i18n wagtailimages_tags %}
 {% get_settings as wagtail_settings %}
 <!-- Header -->
 <div class="header-area">
@@ -42,12 +42,16 @@
 
             <div class="col-lg-5">
                 <div class="middle">
-                    <form>
+                    <form method="get" action="{% url 'search' %}">
                         <div class="form-group">
                             <div class="inner">
 
                             </div>
-                            <input type="text" class="form-control" placeholder="Search Your Keywords">
+                            <label style="display: block !important;">
+                                <input type="text" name="query"{% if search_query %}
+                                       value="{{ search_query }}"{% endif %} class="form-control"
+                                       placeholder="{% trans 'Search Your Keywords' %}">
+                            </label>
                             <button type="submit" class="btn">
                                 <i class='bx bx-search'></i>
                             </button>
@@ -58,15 +62,18 @@
 
             <div class="col-lg-5">
                 <div class="right">
-                     <div class="social-links">
-                            <ul>
-                                <li>
-                                    <a href="{{ wagtail_settings.base.PyBlogSiteSpecificSettings.youtube}}" target="_blank">
+                    <div class="social-links">
+                        <ul>
+                            <li>
+                                {% if wagtail_settings.base.PyBlogSiteSpecificSettings.youtube %}
+                                    <a href="{{ wagtail_settings.base.PyBlogSiteSpecificSettings.youtube }}"
+                                       target="_blank">
                                         <i class='bx bxl-youtube'></i>
                                     </a>
-                                </li>
-                            </ul>
-                        </div>
+                                {% endif %}
+                            </li>
+                        </ul>
+                    </div>
                 </div>
             </div>
 

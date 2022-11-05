@@ -12,7 +12,7 @@
             </a>
             <div class="inner">
                 <h3>
-                    <a href="{{ page.url }}">{{ page.title }}</a>
+                    <a href="{{ page.url }}">{{ page.title|truncatechars:'50' }}</a>
                 </h3>
                 <span>{{ page.introduction|truncatechars:'100' }}</span>
             </div>

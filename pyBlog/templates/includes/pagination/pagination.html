@@ -1,0 +1,40 @@
+{% load i18n %}
+{% if posts.has_other_pages %}
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <nav aria-label="{% trans 'Page navigation' %}">
+                     <ul class="pagination justify-content-center">
+                         {% if posts.has_previous %}
+                             <li class="page-item">
+                                 <a class="page-link common-btn" href="?page={{ posts.previous_page_number }}{% if request.GET.query %}&query={{ request.GET.query }}{% endif %}">
+                                    <i class="material-icons">{% trans 'Previous' %}</i>
+                                 </a>
+                             </li>
+                         {% else %}
+                            <li class="disabled"><a class="page-link common-btn" href="#"><i class="material-icons">{% trans 'Previous' %}</i></a></li>
+                        {% endif %}
+                        {% for num in posts.paginator.page_range %}
+                            {% if posts.number == num %}
+                                <li class="active page-item"><a class="page-link common-btn" href="#">{{ num }}</a></li>
+                             {% elif num > posts.number|add:'-3' and num < posts.number|add:'3' %}
+                                <li class="page-item">
+                                    <a class="page-link common-btn" href="?page={{ num }}{% if request.GET.query %}&query={{ request.GET.query }}{% endif %}">{{ num }}</a>
+                                </li>
+                            {% endif %}
+                        {% endfor %}
+                        {% if posts.has_next %}
+                            <li class="page-item">
+                                <a class="page-link common-btn" href="?page={{ posts.next_page_number }}{% if request.GET.query %}&query={{ request.GET.query }}{% endif %}">
+                                    <i class="material-icons">{% trans 'Next' %}</i>
+                                </a>
+                            </li>
+                        {% else %}
+                            <li class="disabled page-item"><a class="page-link common-btn" href="#"><i class="material-icons">{% trans 'Next' %}</i></a></li>
+                        {% endif %}
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+{% endif %}

@@ -353,12 +353,16 @@ class PyBlogSiteSpecificSettings(BaseGenericSetting):
     )
     header_text = models.CharField(max_length=255, blank=True, null=True)
     youtube = models.URLField(default='url')
+    google_code = models.TextField(help_text="Google code for head page", blank=True)
+    comments_code = models.TextField(help_text="Code for comments code", blank=True)
     panels = [
         FieldPanel('site_name'),
         FieldPanel('site_image'),
         FieldPanel('bread_image'),
         FieldPanel('header_text'),
         FieldPanel('youtube'),
+        FieldPanel('google_code'),
+        FieldPanel('comments_code'),
     ]
 
     class Meta:

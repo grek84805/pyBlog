@@ -1,38 +1,36 @@
 {% extends "base.html" %}
-{% load static wagtailcore_tags %}
+{% load static wagtailcore_tags i18n %}
 
 {% block body_class %}template-searchresults{% endblock %}
 
 {% block title %}Search{% endblock %}
 
 {% block content %}
-<h1>Search</h1>
 
-<form action="{% url 'search' %}" method="get">
-    <input type="text" name="query"{% if search_query %} value="{{ search_query }}"{% endif %}>
-    <input type="submit" value="Search" class="button">
-</form>
+    {% include 'includes/breadcrump/breadcrum-item.html' %}
 
-{% if search_results %}
-<ul>
-    {% for result in search_results %}
-    <li>
-        <h4><a href="{% pageurl result %}">{{ result }}</a></h4>
-        {% if result.search_description %}
-        {{ result.search_description }}
-        {% endif %}
-    </li>
-    {% endfor %}
-</ul>
+    <section class="blog-area ptb-100">
+        <div class="container">
+            <div class="row justify-content-center">
 
-{% if search_results.has_previous %}
-<a href="{% url 'search' %}?query={{ search_query|urlencode }}&amp;page={{ search_results.previous_page_number }}">Previous</a>
-{% endif %}
+                {% if posts %}
+                    <!-- Blog -->
 
-{% if search_results.has_next %}
-<a href="{% url 'search' %}?query={{ search_query|urlencode }}&amp;page={{ search_results.next_page_number }}">Next</a>
-{% endif %}
-{% elif search_query %}
-No results found
-{% endif %}
+                    {% for result in posts %}
+                        {% with page=result.specific %}
+                            {% include 'includes/card/card_item_2.html' %}
+                        {% endwith %}
+                    {% endfor %}
+
+                {% elif search_query %}
+                    {% trans 'No results found' %}
+                {% endif %}
+
+            </div>
+            <div class="text-center">
+                {% include 'includes/pagination/pagination.html' %}
+            </div>
+        </div>
+    </section>
+    <!-- End Blog -->
 {% endblock %}

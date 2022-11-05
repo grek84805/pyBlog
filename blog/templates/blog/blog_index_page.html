@@ -16,7 +16,7 @@
         <div class="container">
             <div class="row justify-content-center">
 
-                {% for post in page.get_children %}
+                {% for post in posts %}
                     {% with page=post.specific %}
                         {% include 'includes/card/card_item.html' %}
                     {% endwith %}
@@ -25,7 +25,7 @@
             </div>
 
             <div class="text-center">
-
+                {% include 'includes/pagination/pagination.html' %}
             </div>
 
         </div>
