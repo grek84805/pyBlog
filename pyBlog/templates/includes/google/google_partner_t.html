@@ -1,0 +1,11 @@
+{% load wagtailsettings_tags %}
+{% get_settings as wagtail_settings %}
+{% if wagtail_settings.base.PyBlogSiteSpecificSettings.google_partner_t %}
+    <section class="blog-area ptb-100">
+        <div class="container">
+            <div class="row justify-content-center">
+                {{ wagtail_settings.base.PyBlogSiteSpecificSettings.google_partner_t|safe }}
+            </div>
+        </div>
+    </section>
+{% endif %}

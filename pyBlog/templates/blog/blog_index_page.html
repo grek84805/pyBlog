@@ -9,9 +9,8 @@
 
 
 {% block content %}
-
     {% include 'includes/breadcrump/breadcrum-item.html' %}
-
+    {% include 'includes/google/google_partner_t.html' %}
     <!-- Blog -->
     <section class="blog-area ptb-100">
         <div class="container">
@@ -19,7 +18,7 @@
 
                 {% for post in posts %}
                     {% with page=post.specific %}
-                        {% include 'includes/card/card_item_2.html' %}
+                        {% include 'includes/card/card_item.html' %}
                     {% endwith %}
                 {% endfor %}
 

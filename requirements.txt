@@ -61,7 +61,7 @@ packaging==21.3
 pexpect==4.8.0
 phonenumbers==8.12.57
 Pillow==9.2.0
-pipenv==2022.10.12
+pipenv==2022.11.5
 pkginfo==1.8.3
 platformdirs==2.5.2
 ply==3.11
@@ -84,6 +84,8 @@ requests==2.28.1
 requests-toolbelt==0.9.1
 rjsmin==1.2.0
 SecretStorage==3.3.3
+semantic-version==2.10.0
+setuptools-rust==1.5.2
 shellingham==1.5.0
 six==1.16.0
 soupsieve==2.3.2.post1
@@ -92,6 +94,7 @@ tablib==3.2.1
 telepath==0.3
 toml==0.10.2
 tomlkit==0.11.5
+typing_extensions==4.4.0
 urllib3==1.26.12
 virtualenv==20.16.6
 virtualenv-clone==0.5.7

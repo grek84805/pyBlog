@@ -355,6 +355,9 @@ class PyBlogSiteSpecificSettings(BaseGenericSetting):
     youtube = models.URLField(default='url')
     google_code = models.TextField(help_text="Google code for head page", blank=True)
     comments_code = models.TextField(help_text="Code for comments code", blank=True)
+    google_partner_t = models.TextField('Partner Google top', help_text="Partner Google top", blank=True)
+    google_partner_b = models.TextField('Partner Google bottom', help_text="Partner Google bottom", blank=True)
+
     panels = [
         FieldPanel('site_name'),
         FieldPanel('site_image'),
@@ -363,6 +366,8 @@ class PyBlogSiteSpecificSettings(BaseGenericSetting):
         FieldPanel('youtube'),
         FieldPanel('google_code'),
         FieldPanel('comments_code'),
+        FieldPanel('google_partner_t'),
+        FieldPanel('google_partner_b'),
     ]
 
     class Meta:
